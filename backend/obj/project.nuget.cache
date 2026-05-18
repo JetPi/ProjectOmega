@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "ajeQP60SJEA=",
+  "success": true,
+  "projectFilePath": "/home/ibrahim/Documents/Work Files/ProjectOmega/backend/backend.csproj",
+  "expectedPackageFiles": [
+    "/home/ibrahim/.nuget/packages/microsoft.aspnetcore.openapi/10.0.7/microsoft.aspnetcore.openapi.10.0.7.nupkg.sha512",
+    "/home/ibrahim/.nuget/packages/microsoft.openapi/2.0.0/microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
