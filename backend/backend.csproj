@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Ads.GoogleAds" Version="26.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
+    <PackageReference Include="Microsoft.BingAds.SDK" Version="13.0.28" />
   </ItemGroup>
 
 </Project>
