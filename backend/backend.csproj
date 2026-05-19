@@ -11,5 +11,8 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
     <PackageReference Include="Microsoft.BingAds.SDK" Version="13.0.28" />
   </ItemGroup>
+  <Target Name="GenerateTypeScript" AfterTargets="Build">
+    <Exec Command="dotnet tool run dotnet-typegen generate"/>
+  </Target>
 
 </Project>

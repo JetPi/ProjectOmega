@@ -1,0 +1,12 @@
+{
+    "name": "projectomega",
+    "devDependencies": {
+        "concurrently": "^8.0.0"
+    },
+    "scripts": {
+        "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+        "dev:frontend": "cd frontend && npm run dev",
+        "dev:backend": "cd backend && dotnet watch",
+        "build:types": "dotnet tool run dotnet-typegen generate --project ./backend/MyApi.csproj"
+    }
+}
