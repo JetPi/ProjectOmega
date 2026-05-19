@@ -1,0 +1,6 @@
+{
+    "outputPath": "../frontend/src/types/generated",
+    "barrelFile": true,
+    "enumStringInitializers": true,
+    "clearOutputDirectory": true
+}

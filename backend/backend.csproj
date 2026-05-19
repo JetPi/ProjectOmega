@@ -10,9 +10,17 @@
     <PackageReference Include="Google.Ads.GoogleAds" Version="26.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
     <PackageReference Include="Microsoft.BingAds.SDK" Version="13.0.28" />
+    <PackageReference Include="TypeGen" Version="7.0.0" />
   </ItemGroup>
-  <Target Name="GenerateTypeScript" AfterTargets="Build">
-    <Exec Command="dotnet tool run dotnet-typegen generate"/>
-  </Target>
+  
+  <ItemGroup>
+    <GeneratedTypes Include="../frontend/src/types/generated/*.ts" />
+  </ItemGroup>
+
+  <Target Name="GenerateTypeScript" AfterTargets="Build" Inputs="**/*.cs" Outputs="@(GeneratedTypes)">
+  
+  <Exec Command="dotnet tool run dotnet-typegen generate" />
+  
+</Target>
 
 </Project>
