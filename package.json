@@ -1,7 +1,7 @@
 {
     "name": "projectomega",
     "devDependencies": {
-        "concurrently": "^8.0.0"
+        "concurrently": "^8.2.2"
     },
     "scripts": {
         "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
