@@ -1,7 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using backend.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 builder.Services.AddCors(options => {
     options.AddPolicy("OpenPolicy", policy => {
@@ -20,3 +27,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

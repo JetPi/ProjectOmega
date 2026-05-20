@@ -1,7 +1,9 @@
+using System.ComponentModel.DataAnnotations;
 namespace backend.Models.User;
 
 public class UserModel
 {
+    [Key]
     public Guid Id { get; set; }
     public string Username { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
