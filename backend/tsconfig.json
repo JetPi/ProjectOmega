@@ -1,5 +1,0 @@
-{
-    "outputPath": "../frontend/src/types/generated",
-    "clearOutputDirectory": true,
-    "exportTypesAsInterfacesByDefault": true
-}
