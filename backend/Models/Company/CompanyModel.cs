@@ -17,12 +17,9 @@ public class CompanyModel
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
 
-    // Owner — a single user who owns this company (separate relationship from Users)
     public Guid? OwnerId { get; set; }
     [ForeignKey(nameof(OwnerId))]
     public UserModel? Owner { get; set; }
-
-    // All employees — EF Core manages this via UserModel.CompanyId FK
     [InverseProperty(nameof(UserModel.Company))]
     public ICollection<UserModel> Users { get; set; } = new List<UserModel>();
 }

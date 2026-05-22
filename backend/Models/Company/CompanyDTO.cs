@@ -12,12 +12,8 @@ public class CompanyDTO
     public string Phone { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
-
-    // Owner — always present scalar, full object optional
     public Guid? OwnerId { get; set; }
     public UserDTO? Owner { get; set; }
-
-    // Employees — always present IDs, full objects optional
     public List<Guid> UserIds { get; set; } = [];
     public List<UserDTO>? Users { get; set; }
 }

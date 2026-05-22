@@ -16,10 +16,8 @@ public class UserModel
     [Key]
     public Guid Id { get; set; }
 
-    // Scalar FK — always present in the DB row
     public Guid CompanyId { get; set; }
 
-    // Navigation property — loaded via EF Include() when needed
     [ForeignKey(nameof(CompanyId))]
     [InverseProperty(nameof(CompanyModel.Users))]
     public CompanyModel? Company { get; set; }
