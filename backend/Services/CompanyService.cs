@@ -9,6 +9,20 @@ public class CompanyService(AppDbContext context)
 {
     private readonly AppDbContext _context = context;
 
+     public static CompanyDTO MapToDTO(CompanyModel company, List<string>? includes = null)
+    {
+        List<string> safeIncludes = includes ?? new List<string>();
+
+        return new CompanyDTO
+        {
+            Id = company.Id,
+            Name = company.Name,
+            OwnerId = company.OwnerId,
+            CreatedAt = company.CreatedAt,
+            Users = safeIncludes.Select(i => i.ToLower()).Contains("users") && company.Users != null ? company.Users.Select(u => UserService.MapToDTO(u)).ToList() : null
+        };
+    }
+
     /// <summary>
     /// Authoritative ownership check — queries the DB directly.
     /// Never rely on a loaded navigation property for security decisions.
