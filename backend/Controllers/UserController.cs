@@ -19,7 +19,7 @@ public class UsersController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDTO>> GetUser(Guid id)
     {
-        var userDto = await _userService.GetUserByIdAsync(id);
+        var userDto = await _userService.GetByIdAsync(id);
 
         if (userDto == null) return NotFound();
 
