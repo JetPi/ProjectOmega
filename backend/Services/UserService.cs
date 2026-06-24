@@ -1,29 +1,25 @@
 using Microsoft.EntityFrameworkCore;
 using backend.Data;
 using backend.Models.User;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace backend.Services;
 
-public class UserService(AppDbContext context)
+public class UserService(AppDbContext context, IPasswordHasher<UserModel> passwordHasher) : IUserService
 {
     private readonly AppDbContext _context = context;
+    private readonly IPasswordHasher<UserModel> _passwordHasher = passwordHasher;
 
-    public static UserDTO MapToDTO(UserModel user, List<string>? includes = null)
+    public async Task<UserDTO?> LoginAsync(string email, string password)
     {
-        List<string> safeIncludes = includes ?? new List<string>();
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        if (user == null) return null;
 
-        return new UserDTO
-        {
-            Id = user.Id,
-            Username = user.Username,
-            Email = user.Email,
-            Role = user.Role.ToString(),
-            CreatedAt = user.CreatedAt,
-            CompanyId = user.CompanyId,
-            Company = safeIncludes.Select(i => i.ToLower()).Contains("company") && user.Company != null ? CompanyService.MapToDTO(user.Company) : null,
-            IsOwner = user.Company != null && user.Company.OwnerId == user.Id
-        };
+        var verificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
+
+        if (verificationResult != PasswordVerificationResult.Success) return null;
+        return MapToDTO(user);
     }
 
     public async Task<List<UserDTO>> GetAllAsync(List<string>? includes = null)
@@ -36,6 +32,43 @@ public class UserService(AppDbContext context)
         var user = await _context.Users.Include(u => u.Company).FirstOrDefaultAsync(u => u.Id == id);
         if (user == null) return null;
         return MapToDTO(user, includes);
+    }
+
+    public async Task<UserDTO?> CreateAsync(UserDTO userDTO)
+    {
+        if (string.IsNullOrEmpty(userDTO.Password)) return null;
+
+        var user = MapToModel(userDTO);
+        user.PasswordHash = _passwordHasher.HashPassword(user, userDTO.Password);
+
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+        return MapToDTO(user);
+    }
+
+    private static UserModel MapToModel(UserDTO dto) => new()
+    {
+        Username = dto.Username,
+        Email = dto.Email,
+        CompanyId = dto.CompanyId,
+        Role = dto.Role,
+    };
+
+    public static UserDTO MapToDTO(UserModel user, List<string>? includes = null)
+    {
+        List<string> safeIncludes = includes ?? new List<string>();
+
+        return new UserDTO
+        {
+            Id = user.Id,
+            Username = user.Username,
+            Email = user.Email,
+            Role = user.Role,
+            CreatedAt = user.CreatedAt,
+            CompanyId = user.CompanyId,
+            Company = safeIncludes.Select(i => i.ToLower()).Contains("company") && user.Company != null ? CompanyService.MapToDTO(user.Company) : null,
+            IsOwner = user.Company != null && user.Company.OwnerId == user.Id
+        };
     }
 
     // TODO: CreateAsync

@@ -10,8 +10,9 @@ public class UserDTO
     public Guid CompanyId { get; set; }
     public CompanyDTO? Company { get; set; }
     public string Username { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
-    public string Role { get; set; } = "User";
+    public UserRole Role { get; set; } = UserRole.User;
     public bool IsOwner { get; set; }
     public DateTime CreatedAt { get; set; }
 }
