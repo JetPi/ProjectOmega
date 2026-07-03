@@ -1,7 +1,8 @@
-using Microsoft.EntityFrameworkCore;
 using backend.Data;
 using backend.Models.User;
+using ErrorOr;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace backend.Services;
@@ -11,32 +12,23 @@ public class UserService(AppDbContext context, IPasswordHasher<UserModel> passwo
     private readonly AppDbContext _context = context;
     private readonly IPasswordHasher<UserModel> _passwordHasher = passwordHasher;
 
-    public async Task<UserDTO?> LoginAsync(string email, string password)
-    {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-        if (user == null) return null;
-
-        var verificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
-
-        if (verificationResult != PasswordVerificationResult.Success) return null;
-        return MapToDTO(user);
-    }
-
     public async Task<List<UserDTO>> GetAllAsync(List<string>? includes = null)
     {
         return await _context.Users.Include(u => u.Company).Select(u => MapToDTO(u, includes)).ToListAsync();
     }
 
-    public async Task<UserDTO?> GetByIdAsync(Guid id, List<string>? includes = null)
+    public async Task<ErrorOr<UserDTO>> GetByIdAsync(Guid id, List<string>? includes = null)
     {
         var user = await _context.Users.Include(u => u.Company).FirstOrDefaultAsync(u => u.Id == id);
-        if (user == null) return null;
+
+        if (user == null) return Error.NotFound(description: "User not found");
+        
         return MapToDTO(user, includes);
     }
 
-    public async Task<UserDTO?> CreateAsync(UserDTO userDTO)
+    public async Task<ErrorOr<UserDTO>> CreateAsync(UserDTO userDTO)
     {
-        if (string.IsNullOrEmpty(userDTO.Password)) return null;
+        if (string.IsNullOrEmpty(userDTO.Password)) return Error.Validation(description: "Password is required");
 
         var user = MapToModel(userDTO);
         user.PasswordHash = _passwordHasher.HashPassword(user, userDTO.Password);
