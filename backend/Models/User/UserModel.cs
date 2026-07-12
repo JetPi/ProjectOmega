@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using backend.Models.Company;
+using TypeGen.Core.TypeAnnotations;
 
 namespace backend.Models.User;
 
+[ExportTsEnum]
 public enum UserRole
 {
     User,

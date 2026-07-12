@@ -15,5 +15,5 @@ public class CompanyDTO
     public Guid? OwnerId { get; set; }
     public UserDTO? Owner { get; set; }
     public List<Guid> UserIds { get; set; } = [];
-    public List<UserDTO>? Users { get; set; }
+    public List<UserDTO>? Users { get; set; } = [];
 }

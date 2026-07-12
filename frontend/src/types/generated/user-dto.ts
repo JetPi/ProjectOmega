@@ -4,14 +4,16 @@
  */
 
 import { CompanyDTO } from "./company-dto";
+import { UserRole } from "./user-role";
 
 export interface UserDTO {
     id: string;
     companyId: string;
     company: CompanyDTO;
     username: string;
+    password: string;
     email: string;
-    role: string;
+    role: UserRole;
     isOwner: boolean;
     createdAt: Date;
 }
