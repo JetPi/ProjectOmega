@@ -10,7 +10,6 @@ public class UsersController : BaseController
 {
     private readonly UserService _userService;
 
-    // Inject the service
     public UsersController(UserService userService)
     {
         _userService = userService;

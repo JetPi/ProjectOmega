@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Services;
-using backend.Models.User;
 using backend.Models.Auth;
 
 namespace backend.Controllers;
@@ -11,7 +10,6 @@ public class AuthController : BaseController
 {
     private readonly AuthService _authService;
 
-    // Inject the service
     public AuthController(AuthService authService)
     {
         _authService = authService;

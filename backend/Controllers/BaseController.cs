@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using backend.Services;
-using backend.Models.User;
 using ErrorOr;
 
 namespace backend.Controllers;

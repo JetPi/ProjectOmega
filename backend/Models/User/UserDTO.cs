@@ -1,5 +1,6 @@
 using TypeGen.Core.TypeAnnotations;
 using backend.Models.Company;
+using System.Text.Json.Serialization;
 
 namespace backend.Models.User;
 
@@ -10,7 +11,8 @@ public class UserDTO
     public Guid CompanyId { get; set; }
     public CompanyDTO? Company { get; set; }
     public string Username { get; set; } = string.Empty;
-    public string Password { get; set; } = string.Empty;
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Password { get; set; }
     public string Email { get; set; } = string.Empty;
     public UserRole Role { get; set; } = UserRole.User;
     public bool IsOwner { get; set; }
