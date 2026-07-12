@@ -4,6 +4,7 @@ using backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using System.Text;
 using backend.Models.User;
 using System.Text.Json.Serialization;
@@ -37,7 +38,19 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = false
     };
 });
-builder.Services.AddAuthorization();
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddAuthorization(options =>
+    {
+        options.DefaultPolicy = new AuthorizationPolicyBuilder()
+            .RequireAssertion(_ => true)
+            .Build();
+    });
+}
+else
+{
+    builder.Services.AddAuthorization();
+}
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -56,9 +69,19 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+    app.Logger.LogWarning("Authorization bypass is ENABLED (Development environment).");
+}
+else
+{
+    app.Logger.LogInformation("Authorization bypass is disabled (non-Development environment).");
+}
+
 // Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
 app.UseCors("OpenPolicy");
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

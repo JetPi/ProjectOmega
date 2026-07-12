@@ -1,12 +1,14 @@
 using backend.Models.Auth;
 using backend.Models.Company;
 using backend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class CompanyController : BaseController
 {
     private readonly CompanyService _companyService;
